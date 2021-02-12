@@ -12,7 +12,26 @@ namespace MvcMovie
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
+            //var host = CreateHostBuilder(args).Build();
+
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
+
+            //    try
+            //    {
+            //        SeedData.Initialize(services);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var logger = services.GetRequiredService<ILogger<Program>>();
+            //        logger.LogError(ex, "An error occurred seeding the DB.");
+            //    }
+            //}
+
+            //host.Run();
+
+            var host = BuildWebHost(args);
 
             using (var scope = host.Services.CreateScope())
             {
@@ -20,6 +39,7 @@ namespace MvcMovie
 
                 try
                 {
+                    // Requires using MvcMovie.Models;
                     SeedData.Initialize(services);
                 }
                 catch (Exception ex)
@@ -31,16 +51,21 @@ namespace MvcMovie
 
             host.Run();
 
+
         }
 
-        public static IWebHostBuilder CreateHostBuilder(string[] args) =>
+        //public static IWebHostBuilder CreateHostBuilder(string[] args) =>
             //Host.CreateDefaultBuilder(args)
             //    .ConfigureWebHostDefaults(webBuilder =>
             //    {
             //        webBuilder.UseStartup<Startup>();
             //    });
-            WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
-    
+           // WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
+
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .Build();
 
     }
 }
